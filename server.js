@@ -3,6 +3,7 @@ require('dotenv').config()
 const mongoose = require('mongoose')
 const routes = require('./routes/api/index')
 const bodyParser = require('body-parser')
+const passport = require('passport')
 
 const app = express()
 
@@ -18,8 +19,13 @@ mongoose
     .then(() => console.log('mongo db connected'))
     .catch((e) => console.log(e))
 
-app.get('/', (req, res) => res.send('home page'));
+// routes
 app.use('/api', routes)
+
+//passport config
+app.use(passport.initialize())
+require('./config/passport')(passport)
+
 
 const port = process.env.PORT || 3000
 

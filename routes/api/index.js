@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 
-const userRoutes = require('./users')
+const userRoutes = require('./users.route')
 const profileRoutes = require('./profiles')
 const postRoutes = require('./posts')
 

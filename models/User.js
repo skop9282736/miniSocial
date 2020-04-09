@@ -17,7 +17,7 @@ const UserSchema = new Schema({
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     avatar: {
         type: String,
@@ -46,9 +46,17 @@ UserSchema.pre("save", async function (next) {
 
 // Sign JWT and return
 UserSchema.methods.getSignedJwtToken = function () {
-    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRE
-    });
+    const payload = {
+        id: this._id,
+        name: this.name,
+        email: this.email,
+        avatar: this.avatar
+    }
+    return "Bearer " + jwt.sign(
+        payload, 
+        process.env.JWT_SECRET, 
+        {expiresIn: process.env.JWT_EXPIRE}
+    );
 };
 
 // Match user entered password to hashed password in database
@@ -56,4 +64,4 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports = User = mongoose.model("User", UserSchema)
+module.exports = User = mongoose.model("users", UserSchema)
