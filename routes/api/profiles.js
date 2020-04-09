@@ -6,12 +6,22 @@ const ProfileController = require('../../controller/profiles.controller')
 const router = express.Router()
 
 /*
-    @route POST api/profile
+    @route GET api/profile
     @desc get current user profile
     @access private
 */
-router.get('', 
-            passport.authenticate('jwt', {session: false}), 
-            wrap(ProfileController.getCurrentProfile))
+router.get('',
+    passport.authenticate('jwt', { session: false }),
+    wrap(ProfileController.getCurrentProfile))
 
-module.exports  = router
+
+/*
+    @route POST api/profile
+    @desc create/edit current user profile
+    @access private
+*/
+router.post('',
+    passport.authenticate('jwt', { session: false }),
+    wrap(ProfileController.createCurrentProfile))
+
+module.exports = router

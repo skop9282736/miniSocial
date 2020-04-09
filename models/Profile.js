@@ -43,7 +43,7 @@ const ProfileSchema = new Schema({
         current: {type: Boolean, default: false},
         description: {type: Date}
     }],
-    experiences: [{
+    education: [{
         school: {type: String, require: true},
         degree: {type: String, require: true},
         fieldOfStudy: {type: String, require: true},
