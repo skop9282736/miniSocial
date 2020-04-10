@@ -1,4 +1,5 @@
 const Profile = require('../models/Profile')
+const validateProfileInput = require('./../validation/profile')
 
 
 module.exports.getCurrentProfile = async (req, res) => { 
@@ -14,6 +15,12 @@ module.exports.getCurrentProfile = async (req, res) => {
 }
 
 module.exports.createCurrentProfile = async (req, res) => {
+    const {errors, isValid} = validateProfileInput(req.body)
+
+    if(!isValid) {
+        return res.status(400).json(errors)
+    }
+
     const profileFields = {}
     profileFields.user = req.user.id
     if (req.body.handle) profileFields.handle = req.body.handle
@@ -24,7 +31,13 @@ module.exports.createCurrentProfile = async (req, res) => {
     if (req.body.skills) profileFields.skills = req.body.skills.split(',')
     if (req.body.bio) profileFields.bio = req.body.bio
     if (req.body.githubUsername) profileFields.githubUsername = req.body.githubUsername
-    if (req.body.social) profileFields.social = req.body.social
+    //social
+    profileFields.social = {}
+    if (req.body.twitter) profileFields.social.twitter = req.body.twitter
+    if (req.body.youtube) profileFields.social.youtube = req.body.youtube
+    if (req.body.facebook) profileFields.social.facebook = req.body.facebook
+
+
     
     const profile = await Profile.findOne({
         user: req.user.id
@@ -32,14 +45,12 @@ module.exports.createCurrentProfile = async (req, res) => {
 
     if(!profile) { // create
         const profile = await Profile.create(profileFields)
-        res.status(200).json(profile)
+        return res.status(200).json(profile)
     } else { // update
         const profile = await Profile.findOneAndUpdate(
             { user: req.user.id },
             { $set: profileFields },
-            { new: true })
-        res.status(200).json(profile)
+            { new: true , useFindAndModify: false})
+        return res.status(200).json(profile)
     }
-
-    res.status(200).json(profile)
 }
