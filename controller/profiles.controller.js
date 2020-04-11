@@ -54,3 +54,33 @@ module.exports.createCurrentProfile = async (req, res) => {
         return res.status(200).json(profile)
     }
 }
+
+module.exports.getProfileByHandle = async (req, res) => {
+    const handle = req.params.handle
+    const profile = await Profile.findOne({handle: handle})
+                    .populate('user', ['name', 'avatar'])
+    if(!profile) {
+        return res.send(404).json({error: 'there is no profile for this user'})
+    }
+    return res.send(200).json({profile})
+}
+
+module.exports.getProfileById = async (req, res) => {
+    const id = req.params.id
+    const profile = await Profile.findById(id)
+                    .populate('user', ['name', 'avatar'])
+    if(!profile) {
+        return res.send(404).json({error: 'there is no profile for this user'})
+    }
+    return res.send(200).json({profile})
+}
+
+module.exports.getAllProfiles = async (req, res) => {
+    const profiles = await Profile.find()
+                    .populate('user', ['name', 'avatar'])
+    if(!profiles) {
+        return res.send(404).json({error: 'there is no profile saved in the database'})
+    }
+    return res.send(200).json({profiles})
+}
+

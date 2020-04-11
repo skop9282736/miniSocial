@@ -24,4 +24,26 @@ router.post('',
     passport.authenticate('jwt', { session: false }),
     wrap(ProfileController.createCurrentProfile))
 
+
+/*
+    @route GET api/profile/handle/:handle
+    @desc get  profile by handle
+    @access public
+*/
+router.get('/handle/:handle',wrap(ProfileController.getProfileByHandle))
+
+/*
+    @route GET api/profile/:id
+    @desc get  profile by id
+    @access public
+*/
+router.get('/:id',wrap(ProfileController.getProfileByHandle))
+
+/*
+    @route GET api/profile
+    @desc get  all profiles
+    @access public
+*/
+router.get('/all',wrap(ProfileController.getAllProfiles))
+
 module.exports = router
