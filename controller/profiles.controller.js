@@ -1,5 +1,7 @@
 const Profile = require('../models/Profile')
 const validateProfileInput = require('./../validation/profile')
+const validateExperienceInput = require('./../validation/experience')
+const validateEducationInput = require('./../validation/education')
 
 
 module.exports.getCurrentProfile = async (req, res) => { 
@@ -84,3 +86,58 @@ module.exports.getAllProfiles = async (req, res) => {
     return res.send(200).json({profiles})
 }
 
+module.exports.AddExperienceToProfile = async (req, res) => {
+    const {errors, isValid} = validateExperienceInput(req.body)
+
+    if(!isValid) {
+        return res.status(400).json(errors)
+    }
+    const profile = await Profile.findOne({user: req.user._id})
+    const newExp = {
+        title: req.body.title,
+        company: req.body.company,
+        location: req.body.location,
+        from: req.body.from,
+        to: req.body.to,
+        current: req.body.current,
+        description: req.body.description,
+    }
+    // add to experience array
+    profile.experiences.unshift(newExp)
+    await profile.save()
+    return res.status(200).json(profile)
+}
+
+
+module.exports.AddEducationToProfile = async (req, res) => {
+    const {errors, isValid} = validateEducationInput(req.body)
+
+    if(!isValid) {
+        return res.status(400).json(errors)
+    }
+    const profile = await Profile.findOne({user: req.user._id})
+    const newEdu = {
+        school: req.body.school,
+        degree: req.body.degree,
+        fieldOfStudy: req.body.fieldOfStudy,
+        from: req.body.from,
+        to: req.body.to,
+        current: req.body.current,
+        description: req.body.description,
+    }
+    // add to education array
+    profile.education.unshift(newEdu)
+    await profile.save()
+    return res.status(200).json(profile)
+}
+
+module.exports.DeleteEducationToProfile = async (req, res) => {
+    const profile = await Profile.findOne({user: req.user._id})
+    const removeIndex = profile.education
+        .map(education => education.id)
+        .indexOf(req.params.edu_id)
+    profile.education.splice(removeIndex, 1)
+    await profile.save()
+
+    return res.status(200).json(profile)
+}

@@ -30,20 +30,52 @@ router.post('',
     @desc get  profile by handle
     @access public
 */
-router.get('/handle/:handle',wrap(ProfileController.getProfileByHandle))
+router.get('/handle/:handle', wrap(ProfileController.getProfileByHandle))
 
 /*
     @route GET api/profile/:id
     @desc get  profile by id
     @access public
 */
-router.get('/:id',wrap(ProfileController.getProfileByHandle))
+router.get('/:id', wrap(ProfileController.getProfileByHandle))
 
 /*
     @route GET api/profile
     @desc get  all profiles
     @access public
 */
-router.get('/all',wrap(ProfileController.getAllProfiles))
+router.get('/all', wrap(ProfileController.getAllProfiles))
+
+/*
+    @route POST api/profile/experience
+    @desc add experience to profile
+    @access private
+*/
+router.post('/experience', 
+                        passport.authenticate('jwt', { session: false }),
+                        wrap(ProfileController.AddExperienceToProfile))
+
+
+/*
+    @route POST api/profile/education
+    @desc add education to profile
+    @access private
+*/
+router.post('/education', 
+                        passport.authenticate('jwt', { session: false }),
+                        wrap(ProfileController.AddEducationToProfile))
+
+
+/*
+    @route DELETE api/profile/education
+    @desc delete education to profile
+    @access private
+*/
+router.delete('/education/:edu_id', 
+                        passport.authenticate('jwt', { session: false }),
+                        wrap(ProfileController.DeleteEducationToProfile))
+
+
+
 
 module.exports = router
