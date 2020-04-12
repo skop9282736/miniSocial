@@ -141,3 +141,14 @@ module.exports.DeleteEducationToProfile = async (req, res) => {
 
     return res.status(200).json(profile)
 }
+
+module.exports.DeleteExperienceFromProfile = async (req, res) => {
+    const profile = await Profile.findOne({user: req.user._id})
+    const removeIndex = profile.experiences
+        .map(exp => exp.id)
+        .indexOf(req.params.exp_id)
+    profile.experiences.splice(removeIndex, 1)
+    await profile.save()
+
+    return res.status(200).json(profile)
+}

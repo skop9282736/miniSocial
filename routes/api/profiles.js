@@ -76,6 +76,13 @@ router.delete('/education/:edu_id',
                         wrap(ProfileController.DeleteEducationToProfile))
 
 
-
+/*
+    @route DELETE api/profile/education 
+    @desc delete education to profile
+    @access private
+*/
+router.delete('/experience/:exp_id', 
+                        passport.authenticate('jwt', { session: false }),
+                        wrap(ProfileController.DeleteExperienceFromProfile))
 
 module.exports = router
