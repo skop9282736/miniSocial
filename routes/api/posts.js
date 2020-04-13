@@ -1,9 +1,17 @@
 const express = require('express')
+const passport = require('passport')
+const wrap = require('express-exception-handler').wrap
+const postsController = require('./../../controller/posts.controller')
 
 const router = express.Router()
 
-router.get('', (req, res) => {
-    res.send('posts route')
-})
+/*
+    @route POST api/posts
+    @desc create post
+    @access private
+*/
+router.post('/', passport.authenticate('jwt',  { session: false }), wrap(
+    postsController.createPost
+))
 
 module.exports  = router
