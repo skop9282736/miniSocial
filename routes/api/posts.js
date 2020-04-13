@@ -34,5 +34,24 @@ router.get('/', postsController.getPosts);
 // @access  Public
 router.get('/:id', postsController.getPostById);
 
+// @route   POST api/posts/like/:id
+// @desc    Like post
+// @access  Private
+router.post(
+  '/like/:id',
+  passport.authenticate('jwt', { session: false }),
+  postsController.likePost
+);
+
+// @route   POST api/posts/unlike/:id
+// @desc    Unlike post
+// @access  Private
+router.post(
+  '/unlike/:id',
+  passport.authenticate('jwt', { session: false }),
+  postsController.unlikePost
+);
+
+
 
 module.exports  = router
