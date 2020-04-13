@@ -1,16 +1,24 @@
 import React from 'react';
 import './App.css';
+import {BrowserRouter as Router, Route } from 'react-router-dom'; //back forward
+
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-      <Landing />
-      <Footer />
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Route exact path="/" component={Landing} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
