@@ -35,3 +35,24 @@ module.exports.deletePost = async (req, res) => {
       .catch(err => res.status(404).json({ postnotfound: 'No post found' }));
   });
 }
+
+module.exports.getPosts = (req, res) => {
+  Post.find()
+    .sort({ date: -1 })
+    .then(posts => res.json(posts))
+    .catch(err => res.status(404).json({ nopostsfound: 'No posts found' }));
+}
+
+module.exports.getPostById = (req, res) => {
+  Post.findById(req.params.id)
+    .then(post => {
+      if (post) {
+        res.json(post);
+      } else {
+        res.status(404).json({ nopostfound: 'No post found with that ID' })
+      }
+    })
+    .catch(err =>
+      res.status(404).json({ nopostfound: 'No post found with that ID' })
+    );
+}
