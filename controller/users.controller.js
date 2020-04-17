@@ -3,11 +3,11 @@ const validateRegisterInput = require('./../validation/register')
 const validateLoginInput = require('./../validation/login')
 
 module.exports.registerUser = async (req, res, next) => {
-    const {errors, isValid} = validateRegisterInput(req.body)
+    // const {errors, isValid} = validateRegisterInput(req.body)
     
-    if(!isValid) {
-        return res.status(400).json(errors)
-    }
+    // if(!isValid) {
+    //     return res.status(401).json(errors)
+    // }
 
     const user = await User.findOne({email: req.body.email})
     if(user) {
@@ -15,11 +15,11 @@ module.exports.registerUser = async (req, res, next) => {
             email: 'email already exists'
         })
     } else {
-        const user = await User.create({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password
-        });
+        // const user = await User.create({
+        //     name: req.body.name,
+        //     email: req.body.email,
+        //     password: req.body.password
+        // });
         return res.status(200).json({
             user
         })
