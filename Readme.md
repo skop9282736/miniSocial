@@ -1,8 +1,8 @@
-### Mini social media project
+# Mini social media project
 
-## frontend: React
-## backend: Node.js/express.js
-## database: MongoDB
+#### frontend: React
+#### backend: Node.js/express.js
+#### database: MongoDB
 
 - Used Redux in Authentication + posts + profiles + handling errors
 
